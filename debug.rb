@@ -5,3 +5,5 @@ code = FCode::Code.new 'subtract.fc'
 interpreter = FCode::Interpreter.new(code)
 
 code.debug
+
+10.times { interpreter.step }
