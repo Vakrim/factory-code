@@ -24,6 +24,10 @@ class FCode::FactoryIO
   end
 
   def read_package
+    factory.code.read_package position
+  end
+
+  def get_package
     factory.code.destroy_package position
   end
 end

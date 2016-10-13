@@ -50,10 +50,38 @@ class FCode::Factory
       instance_variable_get("@#{ direction }_output").set_package(content)
     end
 
-    define_method "read_#{ direction }" do |content|
+    define_method "read_#{ direction }" do
       raise InputIsNotPresentError unless instance_variable_get("@#{ direction }_input")
       instance_variable_get("@#{ direction }_input").read_package
     end
+
+    define_method "get_#{ direction }" do
+      raise InputIsNotPresentError unless instance_variable_get("@#{ direction }_input")
+      instance_variable_get("@#{ direction }_input").get_package
+    end
+
+    define_method "#{ direction }_input_full?" do
+      raise InputIsNotPresentError unless instance_variable_get("@#{ direction }_input")
+      !!instance_variable_get("@#{ direction }_input").read_package
+    end
+
+    %i(input output).each do |io|
+      define_method "#{ direction }_#{ io }_present?" do
+        !!instance_variable_get("@#{ direction }_#{ io }")
+      end
+    end
+  end
+
+  def all_inputs_full?
+    @inputs.all? { |input| input.read_package }
+  end
+
+  def step!
+    step if respond_to?(:step)
+    %i(main left right).each do |direction|
+      public_send("on_#{ direction }_input_full") if respond_to?("on_#{ direction }_input_full") && public_send("#{ direction }_input_present?") && public_send("#{ direction }_input_full?")
+    end
+    on_all_inputs_full if respond_to?(:on_all_inputs_full) && all_inputs_full?
   end
 
   private

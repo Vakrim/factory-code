@@ -1,9 +1,9 @@
 require 'pry'
 require_relative 'f_code'
 
-code = FCode::Code.new 'subtract.fc'
+code = FCode::Code.new 'swap.fc'
 interpreter = FCode::Interpreter.new(code)
 
 code.debug
 
-10.times { interpreter.step }
+100.times { interpreter.step }

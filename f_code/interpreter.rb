@@ -7,7 +7,7 @@ class FCode::Interpreter
   end
 
   def step
-    code.factories.each(&:step)
+    code.factories.each(&:step!)
+    code.move_packages
   end
-
 end

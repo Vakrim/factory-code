@@ -1,6 +1,18 @@
 class FCode::Code
   BELTS_SYMS = %i(^ > v <)
   EMPTY_SPACE_SYM = :' '
+  BELTS_DIRECTIONS = {
+    '^': :top,
+    '<': :left,
+    '>': :right,
+    'v': :bottom
+  }
+  VECTOR_DIRECTIONS = {
+    top: Vector[0, -1],
+    left: Vector[-1, 0],
+    right: Vector[1, 0],
+    bottom: Vector[0, 1]
+  }
 
   OutOfBoundsError = Class.new StandardError
 
@@ -55,10 +67,10 @@ class FCode::Code
   def neighborhood(index)
     position = index_to_position index
     {
-      top:    at_position(position + Vector[ 0, -1]),
-      left:   at_position(position + Vector[-1, -0]),
-      right:  at_position(position + Vector[ 1,  0]),
-      bottom: at_position(position + Vector[ 0,  1])
+      top:    at_position(position + VECTOR_DIRECTIONS[:top]),
+      left:   at_position(position + VECTOR_DIRECTIONS[:left]),
+      right:  at_position(position + VECTOR_DIRECTIONS[:right]),
+      bottom: at_position(position + VECTOR_DIRECTIONS[:bottom])
     }
   end
 
@@ -76,8 +88,26 @@ class FCode::Code
     @packages.push package
   end
 
-  def destroy_package
+  def destroy_package(position)
+    package = @packages.find { |package| package.position == position }
+    @packages.delete(package)
+    package.content
+  end
 
+  def read_package(position)
+    package = @packages.find { |package| package.position == position }
+    package ? package.content : nil
+  end
+
+  def move_package(package)
+    current_belt = at_position!(package.position)
+    next_belt = at_position!(package.position + VECTOR_DIRECTIONS[BELTS_DIRECTIONS[current_belt]])
+    return if !BELTS_SYMS.include?(next_belt)
+    package.position += VECTOR_DIRECTIONS[BELTS_DIRECTIONS[current_belt]]
+  end
+
+  def move_packages
+    @packages.each { |package| move_package package }
   end
 
   private
