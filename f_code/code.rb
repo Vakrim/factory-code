@@ -16,12 +16,12 @@ class FCode::Code
 
   OutOfBoundsError = Class.new StandardError
 
-  attr_reader :factories
+  attr_reader :factories, :packages
 
   def initialize(file)
     @code_string = File.read file
     @factories = []
-    @packages = []
+    @packages = FCode::PackagesKeeper.new self
     break_code_into_array!
     insert_factories!
   end
@@ -82,32 +82,6 @@ class FCode::Code
 
   def position_to_index(position)
     position[0] + position[1] * @width
-  end
-
-  def create_package(package)
-    @packages.push package
-  end
-
-  def destroy_package(position)
-    package = @packages.find { |package| package.position == position }
-    @packages.delete(package)
-    package.content
-  end
-
-  def read_package(position)
-    package = @packages.find { |package| package.position == position }
-    package ? package.content : nil
-  end
-
-  def move_package(package)
-    current_belt = at_position!(package.position)
-    next_belt = at_position!(package.position + VECTOR_DIRECTIONS[BELTS_DIRECTIONS[current_belt]])
-    return if !BELTS_SYMS.include?(next_belt)
-    package.position += VECTOR_DIRECTIONS[BELTS_DIRECTIONS[current_belt]]
-  end
-
-  def move_packages
-    @packages.each { |package| move_package package }
   end
 
   private

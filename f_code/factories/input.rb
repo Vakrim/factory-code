@@ -1,7 +1,7 @@
 class FCode::Factories::Input < FCode::Factory
 
   def initialize(code, position, neighborhood)
-    @queue = %w(wszystko ma swoje priotrytety)
+    @queue = Array.new(15) { |n| n.to_s }
     super
   end
 

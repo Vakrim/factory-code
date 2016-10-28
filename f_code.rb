@@ -12,6 +12,7 @@ require_relative 'f_code/factory_io'
 require_relative 'f_code/factory'
 require_relative 'f_code/interpreter'
 require_relative 'f_code/package'
+require_relative 'f_code/packages_keeper'
 
 
 Dir["f_code/factories/*.rb"].each { |file| require_relative file }

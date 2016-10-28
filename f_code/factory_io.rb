@@ -20,14 +20,14 @@ class FCode::FactoryIO
   end
 
   def set_package(content)
-    factory.code.create_package FCode::Package.new(position, content)
+    factory.code.packages.create FCode::Package.new(position, content)
   end
 
   def read_package
-    factory.code.read_package position
+    factory.code.packages.read position
   end
 
   def get_package
-    factory.code.destroy_package position
+    factory.code.packages.destroy position
   end
 end

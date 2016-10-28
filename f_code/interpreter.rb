@@ -8,6 +8,6 @@ class FCode::Interpreter
 
   def step
     code.factories.each(&:step!)
-    code.move_packages
+    code.packages.move_all
   end
 end
