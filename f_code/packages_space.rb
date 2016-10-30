@@ -23,8 +23,8 @@ class FCode::PackagesSpace
   def move(package)
     current_belt = @code.at_position!(package.position)
     next_belt = @code.at_position!(package.position + FCode::VECTOR_DIRECTIONS[FCode::BELTS_DIRECTIONS[current_belt]])
-    return if !FCode::BELTS_SYMS.include?(next_belt)
-    package.position += FCode::VECTOR_DIRECTIONS[FCode::BELTS_DIRECTIONS[current_belt]]
+    return unless FCode::BELTS_SYMS.include?(next_belt)
+    package.move FCode::BELTS_DIRECTIONS[current_belt]]
   end
 
   def move_all
