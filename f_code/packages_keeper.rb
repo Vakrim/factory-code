@@ -1,4 +1,4 @@
-class FCode::PackagesKeeper
+class FCode::PackagesSpace
 
   def initialize(code)
     @code = code
@@ -22,9 +22,9 @@ class FCode::PackagesKeeper
 
   def move(package)
     current_belt = @code.at_position!(package.position)
-    next_belt = @code.at_position!(package.position + FCode::Code::VECTOR_DIRECTIONS[FCode::Code::BELTS_DIRECTIONS[current_belt]])
-    return if !FCode::Code::BELTS_SYMS.include?(next_belt)
-    package.position += FCode::Code::VECTOR_DIRECTIONS[FCode::Code::BELTS_DIRECTIONS[current_belt]]
+    next_belt = @code.at_position!(package.position + FCode::VECTOR_DIRECTIONS[FCode::BELTS_DIRECTIONS[current_belt]])
+    return if !FCode::BELTS_SYMS.include?(next_belt)
+    package.position += FCode::VECTOR_DIRECTIONS[FCode::BELTS_DIRECTIONS[current_belt]]
   end
 
   def move_all

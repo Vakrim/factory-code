@@ -1,19 +1,4 @@
 class FCode::Code
-  BELTS_SYMS = %i(^ > v <)
-  EMPTY_SPACE_SYM = :' '
-  BELTS_DIRECTIONS = {
-    '^': :top,
-    '<': :left,
-    '>': :right,
-    'v': :bottom
-  }
-  VECTOR_DIRECTIONS = {
-    top: Vector[0, -1],
-    left: Vector[-1, 0],
-    right: Vector[1, 0],
-    bottom: Vector[0, 1]
-  }
-
   OutOfBoundsError = Class.new StandardError
 
   attr_reader :factories, :packages
@@ -21,7 +6,7 @@ class FCode::Code
   def initialize(file)
     @code_string = File.read file
     @factories = []
-    @packages = FCode::PackagesKeeper.new self
+    @packages = FCode::PackagesSpace.new self
     break_code_into_array!
     insert_factories!
   end
@@ -30,7 +15,7 @@ class FCode::Code
     FCode::Factory.register_factories!
     @factories = []
     @code.map!.with_index do |symbol, index|
-      if BELTS_SYMS.include?(symbol) || symbol == EMPTY_SPACE_SYM
+      if FCode::BELTS_SYMS.include?(symbol) || symbol == FCode::EMPTY_SPACE_SYM
         symbol
       else
         factory = FCode::Factory.new_factory(symbol, self, index_to_position(index), neighborhood(index))
@@ -67,10 +52,10 @@ class FCode::Code
   def neighborhood(index)
     position = index_to_position index
     {
-      top:    at_position(position + VECTOR_DIRECTIONS[:top]),
-      left:   at_position(position + VECTOR_DIRECTIONS[:left]),
-      right:  at_position(position + VECTOR_DIRECTIONS[:right]),
-      bottom: at_position(position + VECTOR_DIRECTIONS[:bottom])
+      top:    at_position(position + FCode::VECTOR_DIRECTIONS[:top]),
+      left:   at_position(position + FCode::VECTOR_DIRECTIONS[:left]),
+      right:  at_position(position + FCode::VECTOR_DIRECTIONS[:right]),
+      bottom: at_position(position + FCode::VECTOR_DIRECTIONS[:bottom])
     }
   end
 

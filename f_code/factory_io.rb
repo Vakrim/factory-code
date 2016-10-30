@@ -1,12 +1,5 @@
 class FCode::FactoryIO
 
-  DIRECTIONS = {
-    top: Vector[0, -1],
-    left: Vector[-1, 0],
-    right: Vector[1, 0],
-    bottom: Vector[0, 1]
-  }
-
   attr_reader :factory, :direction, :action
 
   def initialize(factory, direction, action)
@@ -16,7 +9,7 @@ class FCode::FactoryIO
   end
 
   def position
-    factory.position + DIRECTIONS[@direction]
+    factory.position + FCode::VECTOR_DIRECTIONS[@direction]
   end
 
   def set_package(content)
