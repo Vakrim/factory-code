@@ -1,12 +1,14 @@
 class FCode::Factories::Input < FCode::Factory
 
+  attr_writer :input
+
   def initialize(code, position, neighborhood)
-    @queue = Array.new(15) { |n| n.to_s }
+    @input = []
     super
   end
 
   def step
-    set_main @queue.shift if @queue.length > 0
+    set_main @input.shift if @input.length > 0
   end
 
   def self.symbol

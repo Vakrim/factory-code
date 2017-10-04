@@ -1,5 +1,12 @@
 class FCode::Factories::Output < FCode::Factory
 
+  attr_reader :output
+
+  def initialize(code, position, neighborhood)
+    @output = []
+    super
+  end
+
   def step
 
   end
@@ -9,6 +16,6 @@ class FCode::Factories::Output < FCode::Factory
   end
 
   def on_all_inputs_full
-    puts get_main
+    @output.push get_main
   end
 end
